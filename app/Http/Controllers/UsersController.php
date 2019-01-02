@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\models\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,12 +12,18 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth', [
-            'except' => ['create', 'show', 'store']
+            'except' => ['create', 'show', 'store', 'index']
         ]);
 
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+    }
+
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
     }
 
     public function create()
